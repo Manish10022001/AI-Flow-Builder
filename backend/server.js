@@ -2,7 +2,7 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import connectDB from "./config/db.js";
-import Prompt from "./models/Prompt.js";
+// import Prompt from "./models/Prompt.js";
 import promptRoutes from "./routes/promptRoutes.js";
 dotenv.config();
 
@@ -21,6 +21,7 @@ app.get("/", (req, res) => {
 });
 
 app.use("/api", promptRoutes);
+
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
