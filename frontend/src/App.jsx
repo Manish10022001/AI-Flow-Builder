@@ -1,3 +1,4 @@
+import "./App.css";
 import {
   Background,
   BackgroundVariant,
@@ -37,15 +38,24 @@ const edges = [
 
 export default function App() {
   return (
-    <div style={{ height: "100vh" }}>
-      <ReactFlow nodes={nodes} edges={edges} nodeTypes={nodeTypes} fitView>
-        <Background
-          variant={BackgroundVariant.Dots}
-          gap={24}
-          size={1}
-          color="#1e1e28"
-        />
-      </ReactFlow>
+    <div className="AppWrappeer">
+      <header className="AppHeader">
+        <div className="Header-Left">
+          <span className="Logo">⬡ AI Flow Builder</span>
+        </div>
+
+        <button className="RunBtn">▶ Run Flow</button>
+      </header>
+      <div className="Canvas">
+        <ReactFlow nodes={nodes} edges={edges} nodeTypes={nodeTypes} fitView>
+          <Background
+            variant={BackgroundVariant.Dots}
+            gap={24}
+            size={1}
+            color="#1e1e28"
+          />
+        </ReactFlow>
+      </div>
     </div>
   );
 }
