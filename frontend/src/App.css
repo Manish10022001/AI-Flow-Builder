@@ -1,4 +1,4 @@
-/* InputNode styles scoped under .input-node-wrapper */
+/* InputNode styles */
 .input-node-wrapper {
   background: #16161a;
   border: 1px solid #2a2a35;
@@ -51,7 +51,7 @@
   position: absolute; /* required for handles in react-flow */
 }
 
-/* ResultNode styles scoped under .result-node-wrapper */
+/* ResultNode styles*/
 .result-node-wrapper {
   background: #16161a;
   border: 1px solid #2a2a35;
@@ -126,4 +126,107 @@
   opacity: 0.6;
   cursor: default;
   background: rgba(62, 207, 142, 0.1);
+}
+.result-node-wrapper.loading {
+  border-color: #3ecf8e;
+  box-shadow: 0 0 30px rgba(62, 207, 142, 0.2);
+}
+
+.result-node-text {
+  font-family: sans-serif;
+  font-size: 14px;
+  color: #e8e8f0;
+  line-height: 1.65;
+  white-space: pre-wrap;
+}
+
+/* app.jsx */
+.AppWrapper {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: #0d0d0f;
+}
+
+.AppHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  height: 58px;
+  background: #16161a;
+  border-bottom: 1px solid #2a2a35;
+  flex-shrink: 0;
+}
+
+.Header-Left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.Logo {
+  font-family: monospace;
+  font-weight: 700;
+  font-size: 16px;
+  color: #e8e8f0;
+}
+
+.Badge {
+  font-family: monospace;
+  font-size: 9px;
+  padding: 2px 7px;
+  background: rgba(124, 106, 255, 0.15);
+  border: 1px solid rgba(124, 106, 255, 0.3);
+  border-radius: 20px;
+  color: #7c6aff;
+  letter-spacing: 0.1em;
+}
+
+.RunBtn {
+  padding: 9px 22px;
+  background: #7c6aff;
+  color: #fff;
+  border: none;
+  border-radius: 10px;
+  font-family: monospace;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 0 20px rgba(124, 106, 255, 0.35);
+}
+
+.RunBtn.Disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.Canvas {
+  flex: 1;
+  position: relative;
+}
+
+.Toast {
+  position: fixed;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  padding: 10px 22px;
+  border-radius: 10px;
+  font-family: monospace;
+  font-size: 12px;
+  z-index: 9999;
+}
+
+.Toast.Success {
+  background: rgba(62, 207, 142, 0.15);
+  border: 1px solid rgba(62, 207, 142, 0.4);
+  color: #3ecf8e;
+}
+
+.Toast.Error {
+  background: rgba(255, 80, 80, 0.15);
+  border: 1px solid rgba(255, 80, 80, 0.4);
+  color: #ff6060;
 }
