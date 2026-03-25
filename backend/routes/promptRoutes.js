@@ -24,7 +24,7 @@ router.post("/ask-ai", async (req, res) => {
           "X-Title": "AI Builder Flow",
         },
         body: JSON.stringify({
-          model: "openrouter/free",//used free model router so it picsk one of free model for me
+          model: "openrouter/free", //used free model router so it picsk one of free model for me
           messages: [{ role: "user", content: prompt }],
         }),
       }
@@ -43,6 +43,23 @@ router.post("/ask-ai", async (req, res) => {
   } catch (err) {
     console.log(err);
     return res.status(500).json({ error: "Internal Server Error." });
+  }
+});
+
+//POSt //api/save -> save data to mongodb
+router.post("/save", async (req, res) => {
+  const { prompt, response } = req.body;
+
+  if (!prompt || !response) {
+    return res.status(400).json({ error: "Both fields are required." });
+  }
+
+  try {
+    const saved = await Prompt.create({ prompt, response });
+    return res.json({ message: "Saved successfully", data: saved });
+  } catch (err) {
+    console.error(err);
+    return res.status(500).json({ error: "Failed to save." });
   }
 });
 
