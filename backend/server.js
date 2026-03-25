@@ -2,7 +2,8 @@ import express from "express";
 import cors from "cors";
 import dotenv from "dotenv";
 import connectDB from "./config/db.js";
-import Prompt from "./models/prompts.js";
+import Prompt from "./models/Prompt.js";
+import promptRoutes from "./routes/promptRoutes.js";
 dotenv.config();
 
 const app = express();
@@ -14,30 +15,12 @@ app.use(express.json());
 // Connect Database
 connectDB();
 
-app.get("/test-prompt", async (req, res) => {
-  try {
-    // Create a new Prompt document
-    const newPrompt = await Prompt.create({
-      prompt: "Hello, AI!",
-      response: "Hi there! How can I help?",
-    });
-
-    // Fetch it back to confirm
-    const found = await Prompt.findById(newPrompt._id);
-
-    res.json({
-      message: "Prompt model works!",
-      createdPrompt: found,
-    });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
 // Test route
 app.get("/", (req, res) => {
   res.send("API is running...");
 });
 
+app.use("/api", promptRoutes);
 const PORT = process.env.PORT || 5000;
 
 app.listen(PORT, () => {
