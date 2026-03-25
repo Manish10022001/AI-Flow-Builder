@@ -1,7 +1,7 @@
 import { Handle, Position } from "@xyflow/react";
 import React from "react";
 
-export default function InputNode() {
+export default function InputNode({ data }) {
   return (
     <div className="input-node-wrapper">
       <div className="input-node-label">
@@ -12,6 +12,8 @@ export default function InputNode() {
       <textarea
         className="input-node-textarea"
         placeholder="Ask me anything.."
+        value={data.value}
+        onChange={(e) => data.onChange(e.target.value)}
         rows={4}
       />
 

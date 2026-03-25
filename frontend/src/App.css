@@ -127,6 +127,18 @@
   cursor: default;
   background: rgba(62, 207, 142, 0.1);
 }
+.result-node-wrapper.loading {
+  border-color: #3ecf8e;
+  box-shadow: 0 0 30px rgba(62, 207, 142, 0.2);
+}
+
+.result-node-text {
+  font-family: sans-serif;
+  font-size: 14px;
+  color: #e8e8f0;
+  line-height: 1.65;
+  white-space: pre-wrap;
+}
 
 /* app.jsx */
 .AppWrapper {
@@ -147,7 +159,7 @@
   flex-shrink: 0;
 }
 
-.HeaderLeft {
+.Header-Left {
   display: flex;
   align-items: center;
   gap: 10px;
