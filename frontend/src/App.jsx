@@ -1,7 +1,13 @@
-import "./App.css";
+import InputNode from "./components/InputNode";
+import ResultNode from "./components/ResultNode";
 
 function App() {
-  return <></>;
+  return (
+    <>
+      <InputNode />
+      {/* <ResultNode /> */}
+    </>
+  );
 }
 
 export default App;
