@@ -1,5 +1,5 @@
 import express, { response } from "express";
-import fetch from "node-fetch";
+
 import Prompt from "../models/Prompt.js";
 
 const router = express.Router();
