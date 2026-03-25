@@ -11,7 +11,8 @@ import {
 import "@xyflow/react/dist/style.css";
 import InputNode from "./components/InputNode";
 import ResultNode from "./components/ResultNode";
-import { useState, useCallback } from "react";
+import { useState, useCallback, useRef } from "react";
+import { askAI, saveFlow } from "./api";
 
 const nodeTypes = {
   inputNode: InputNode,
@@ -45,6 +46,31 @@ const initialEdges = [
 export default function App() {
   const [prompt, setPrompt] = useState("");
   const [saved, setSaved] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [toast, setToast] = useState(null);
+
+  const promptRef = useRef("");
+  const responseRef = useRef("");
+  const showToast = (msg, type = "success") => {
+    setToast({ msg, type });
+    setTimeout(() => setToast(null), 3000);
+  };
+
+  const handleSave = async () => {
+    try {
+      await saveFlow(promptRef.current, responseRef.current);
+      setSaved(true);
+      setNodes((prev) =>
+        prev.map((n) =>
+          n.id === "2" ? { ...n, data: { ...n.data, saved } } : n
+        )
+      );
+      showToast("Saved");
+    } catch {
+      showToast("Failed to save.", "error");
+    }
+  };
+
   const buildNodes = (curPrompt, curResp, curLoading, curSaved) => [
     {
       id: "1",
@@ -67,6 +93,7 @@ export default function App() {
         value: curResp,
         loading: curLoading,
         saved: curSaved,
+        onSave: handleSave,
       },
     },
   ];
@@ -81,6 +108,38 @@ export default function App() {
     [setEdges]
   );
 
+  const handleRunFlow = async () => {
+    if (!prompt.trim()) {
+      return showToast("Please enter a prompt first.", "error");
+    }
+    promptRef.current = prompt;
+    setLoading(true);
+
+    setSaved(false);
+    setNodes(buildNodes(prompt, "", true, false));
+
+    setEdges((prev) =>
+      prev.map((e) => (e.id === "e1-2" ? { ...e, animated: true } : e))
+    );
+
+    try {
+      const { data } = await askAI(prompt);
+      responseRef.current = data.response;
+      setLoading(false);
+      setNodes(buildNodes(prompt, data.response, false, false));
+      setEdges((prev) =>
+        prev.map((e) => (e.id === "e1-2" ? { ...e, animated: false } : e))
+      );
+    } catch (err) {
+      const msg = err.response?.data?.error || "Something went wrong.";
+      setLoading(false);
+      setNodes(buildNodes(prompt, "Error: " + msg, false, false));
+      setEdges((prev) =>
+        prev.map((e) => (e.id === "e1-2" ? { ...e, animated: false } : e))
+      );
+      showToast(msg, "error");
+    }
+  };
   return (
     <div className="AppWrapper">
       <header className="AppHeader">
@@ -88,7 +147,13 @@ export default function App() {
           <span className="Logo">⬡ AI Flow Builder</span>
         </div>
 
-        <button className="RunBtn">▶ Run Flow</button>
+        <button
+          className={`RunBtn ${loading ? "Disabled" : ""}`}
+          onClick={handleRunFlow}
+          disabled={loading}
+        >
+          {loading ? "Running…" : "▶ Run Flow"}
+        </button>
       </header>
       <div className="Canvas">
         <ReactFlow
@@ -109,6 +174,14 @@ export default function App() {
           />
         </ReactFlow>
       </div>
+
+      {toast && (
+        <div
+          className={`Toast ${toast.type === "error" ? "Error" : "Success"}`}
+        >
+          {toast.msg}
+        </div>
+      )}
     </div>
   );
 }
